@@ -39,12 +39,36 @@ async function run() {
                   const users = await userCollection.find().toArray()
                   res.send(users)
             })
+            app.get("/user/:id", async (req,res) => {
+                  const id = req.params.id
+                  const qur = {_id : new ObjectId(id)}
+                  const users = await userCollection.findOne(qur)
+                  res.send(users)
+            })
             app.delete("/users/:id" , async (req,res) => {
                   const id = req.params.id
                   const qur = {_id : new ObjectId(id)}
                   const result = await userCollection.deleteOne(qur)
                   res.send(result)
             })
+            app.put("/updateusers/:id" , async(req ,res) => {
+                  const id = req.params.id 
+                  const user = req.body 
+                  const options = { upsert: true };
+                  const updateData = {
+                        $set : {
+                              name : user.name ,
+                              email : user.email ,
+                              photo: user.photo ,
+                              gnder : user.gnder ,
+                              status : user.status
+                        }
+                  }
+                  const qur = {_id : new ObjectId(id)}
+                  const result = await userCollection.updateOne( qur , updateData , options)
+                  res.send(result)
+            })
+          
 
 
 
