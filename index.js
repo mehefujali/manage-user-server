@@ -35,8 +35,17 @@ async function run() {
 
 
             })
+            
             app.get("/users", async (req,res) => {
-                  const users = await userCollection.find().toArray()
+
+                  const {search} = req.query
+                  console.log(search);
+                  
+                  let option = {}
+                  if(search){
+                        option = {name : {$regex:search , $options: "i"}  }
+                  }
+                  const users = await userCollection.find(option).toArray()
                   res.send(users)
             })
             app.get("/user/:id", async (req,res) => {
