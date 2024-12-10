@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const { green, log, cyan } = require('console-log-colors');
@@ -10,7 +11,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-const uri = "mongodb://localhost:27017"
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.negmw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
 const client = new MongoClient(uri, {
       serverApi: {
@@ -39,7 +40,7 @@ async function run() {
             app.get("/users", async (req,res) => {
 
                   const {search} = req.query
-                  console.log(search);
+                  
                   
                   let option = {}
                   if(search){
